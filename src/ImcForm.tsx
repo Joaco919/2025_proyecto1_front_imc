@@ -25,7 +25,7 @@ function ImcForm() {
     }
 
     try {
-      const response = await axios.post("https://two025-proyecto1-back-imc-vlxv.onrender.com", {
+      const response = await axios.post("https://two025-proyecto1-back-imc-vlxv.onrender.com/imc/calcular", {
         altura: alturaNum,
         peso: pesoNum,
       });
