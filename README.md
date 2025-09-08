@@ -18,8 +18,8 @@ La Calculadora de IMC es una aplicación desarrollada como parte del curso de In
 
 ## Enlaces
 
-- [Aplicación en vivo](https://two025-proyecto1-front-imc.onrender.com)
-- [API Backend](https://two025-proyecto1-back-imc-vlxv.onrender.com)
+- [Aplicación en vivo](https://2025-proyecto1-front-imc-sepia.vercel.app/)
+- [API Backend](https://github.com/Joaco919/2025_proyecto1_back_imc.gitm)
 
 ## Tecnologías Utilizadas
 
@@ -62,9 +62,7 @@ VITE_API_URL=http://localhost:3000
 ```
 
 ## Despliegue
-El proyecto está desplegado en Render:
-- Frontend: https://two025-proyecto1-front-imc.onrender.com
-- Backend: https://two025-proyecto1-back-imc-vlxv.onrender.com
+El proyecto está desplegado en Render y Vercel:
 
 ## Autor
 - Grupo 12 - Joaquín Ferreyra
