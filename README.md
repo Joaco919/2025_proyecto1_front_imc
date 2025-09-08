@@ -62,7 +62,11 @@ VITE_API_URL=http://localhost:3000
 ```
 
 ## Despliegue
-El proyecto está desplegado en Render y Vercel:
+El frontend está desplegado en Vercel, con integración automática a GitHub.
+Cada push en la rama master genera un nuevo despliegue.
+En el frontend, el único cambio realizado fue la URL de conexión hacia el backend.
+Inicialmente el proyecto estaba configurado para consumir la API desde http://localhost:3000.
+Para el despliegue, se reemplazó por la URL pública generada en Render
 
 ## Autor
 - Grupo 12 -
