@@ -42,6 +42,7 @@ function ImcForm() {
   return (
     <div>
       <div className="form-context">
+        <img src="/grupo12.jpg" alt="Grupo12" className="grupo" />
         <h1>Calculadora de IMC</h1>
         <form onSubmit={handleSubmit}>
           <div>

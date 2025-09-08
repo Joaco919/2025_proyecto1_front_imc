@@ -21,6 +21,15 @@ body {
   text-align: center;
 }
 
+/* Imagen */
+.form-context .grupo {
+  width: 50%;
+  height: auto;
+  margin: 2rem 0;
+  margin-bottom: 1px;
+  border-radius: 5%;
+}
+
 /* Título */
 h1 {
   font-size: 1.8rem;
