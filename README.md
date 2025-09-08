@@ -65,12 +65,7 @@ VITE_API_URL=http://localhost:3000
 El proyecto está desplegado en Render y Vercel:
 
 ## Autor
-- Grupo 12 - Joaquín Ferreyra
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+- Grupo 12 -
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
