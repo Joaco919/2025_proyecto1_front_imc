@@ -41,7 +41,7 @@ function ImcForm() {
 
   return (
     <div>
-      <div>
+      <div className="form-context">
         <h1>Calculadora de IMC</h1>
         <form onSubmit={handleSubmit}>
           <div>
