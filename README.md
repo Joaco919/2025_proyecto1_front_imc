@@ -1,28 +1,75 @@
-# React + TypeScript + Vite
+# Calculadora de IMC
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación web para calcular el Índice de Masa Corporal (IMC). Permite a los usuarios ingresar su altura y peso para obtener su IMC y la categoría correspondiente a su resultado.
 
-Currently, two official plugins are available:
+## Descripción
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+La Calculadora de IMC es una aplicación desarrollada como parte del curso de Ingeniería de Software. Utiliza una arquitectura moderna con:
 
-## Expanding the ESLint configuration
+- Frontend: React + TypeScript + Vite
+- Backend: NestJS + TypeScript
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Características
 
-- Configure the top-level `parserOptions` property like this:
+- Cálculo preciso del IMC
+- Interfaz de usuario intuitiva y responsiva
+- Validación de datos de entrada
+- Clasificación automática según el resultado del IMC
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Enlaces
+
+- [Aplicación en vivo](https://2025-proyecto1-front-imc-sepia.vercel.app/)
+- [API Backend](https://github.com/Joaco919/2025_proyecto1_back_imc)
+
+## Tecnologías Utilizadas
+
+### Frontend
+- React
+- TypeScript
+- Vite
+- Axios para peticiones HTTP
+
+### Backend
+- NestJS
+- TypeScript
+- Validación de datos con class-validator
+
+## Uso
+
+1. Ingresa tu altura en metros (ejemplo: 1.75)
+2. Ingresa tu peso en kilogramos (ejemplo: 70)
+3. Haz clic en calcular para obtener tu IMC y clasificación
+
+## Desarrollo Local
+
+### Requisitos Previos
+- Node.js
+- npm o yarn
+
+### Configuración del Frontend
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run dev
+```
+
+### Variables de Entorno
+Para desarrollo local, crea un archivo `.env` con:
+```
+VITE_API_URL=http://localhost:3000
+```
+
+## Despliegue
+El frontend está desplegado en Vercel, con integración automática a GitHub.
+Cada push en la rama master genera un nuevo despliegue.
+En el frontend, el único cambio realizado fue la URL de conexión hacia el backend.
+Inicialmente el proyecto estaba configurado para consumir la API desde http://localhost:3000.
+Para el despliegue, se reemplazó por la URL pública generada en Render
+
+## Autor
+- Grupo 12 -
 ```
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
