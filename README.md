@@ -19,7 +19,7 @@ La Calculadora de IMC es una aplicación desarrollada como parte del curso de In
 ## Enlaces
 
 - [Aplicación en vivo](https://2025-proyecto1-front-imc-sepia.vercel.app/)
-- [API Backend](https://github.com/Joaco919/2025_proyecto1_back_imc.gitm)
+- [API Backend](https://github.com/Joaco919/2025_proyecto1_back_imc)
 
 ## Tecnologías Utilizadas
 
