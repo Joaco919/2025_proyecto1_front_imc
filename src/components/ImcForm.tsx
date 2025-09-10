@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { validateAltura, validatePeso, toNumber } from "../utils/validations";
+import { calcularIMC, ImcResult as ImcResultType } from "../utils/api";
+
 
 interface ImcResult {
   imc: number;
@@ -28,30 +30,25 @@ function ImcForm() {
     return !newErrors.altura && !newErrors.peso;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setResultado(null);
+  setErrors({});
+
+  if (!validateForm(altura, peso)) return;
+
+  const alturaNum = toNumber(altura);
+  const pesoNum = toNumber(peso);
+
+  try {
+    const resultadoBackend = await calcularIMC(alturaNum, pesoNum);
+    setResultado(resultadoBackend);
+  } catch (err: any) {
+    setErrors({ general: err.message });
     setResultado(null);
-    setErrors({});
+  }
+};
 
-    if (!validateForm(altura, peso)) return;
-
-    const alturaNum = toNumber(altura);
-    const pesoNum = toNumber(peso);
-
-    try {
-      const response = await axios.post(
-        "https://two025-proyecto1-back-imc-vlxv.onrender.com/imc/calcular",
-        { altura: alturaNum, peso: pesoNum }
-      );
-      setResultado(response.data);
-    } catch (err: any) {
-      const message =
-        err?.response?.data?.message ??
-        "No pudimos calcular el IMC. Revisa tu conexión o si el backend está disponible.";
-      setErrors({ general: message });
-      setResultado(null);
-    }
-  };
 
   const onAlturaChange = (v: string) => {
     setAltura(v);

@@ -1,5 +1,4 @@
-
-import ImcForm from './ImcForm'
+import ImcForm from "./components/ImcForm";
 import './App.css'
 function App() {
 
