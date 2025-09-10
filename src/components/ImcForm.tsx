@@ -1,13 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { validateAltura, validatePeso, toNumber } from "../utils/validations";
-import { calcularIMC, ImcResult as ImcResultType } from "../utils/api";
-
-
-interface ImcResult {
-  imc: number;
-  categoria: string;
-}
+import { calcularIMC, ImcResult } from "../utils/api";
 
 type FieldErrors = {
   altura?: string;
