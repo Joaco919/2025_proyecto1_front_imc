@@ -1,13 +1,29 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ImcForm from "./components/ImcForm";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
+import HomePage from "./components/HomePage.tsx";
 import './App.css'
-function App() {
+import { AuthProvider } from "./components/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ImcHistorial from "./components/ImcHistorial";
 
+function App() {
   return (
-    <>
-    <div>
-      <ImcForm />
-    </div>
-    </>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+          {/* Rutas protegidas */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/calculator" element={<ImcForm />} />
+            <Route path="/historial" element={<ImcHistorial />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 

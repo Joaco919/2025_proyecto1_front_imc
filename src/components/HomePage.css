@@ -1,0 +1,113 @@
+/* Estilos para la página de inicio */
+.home-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+}
+
+.home-content {
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.auth-card-container {
+  text-align: center;
+}
+
+.auth-card-container h1 {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.auth-options-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 48px;
+  display: flex;
+  align-items: stretch; /* iguala alturas de columnas */
+  justify-content: space-between;
+  gap: 40px;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-option {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* permite empujar el botón al fondo */
+}
+
+/* Alinear botones en el eje X (misma línea de base) */
+.auth-option .btn {
+  margin-top: auto;
+  align-self: center;
+}
+
+.auth-option h3 {
+  color: #333;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.auth-option p {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+}
+
+.divider {
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, #e1e5e9, transparent);
+  flex-shrink: 0;
+}
+
+/* Botones */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  text-align: center;
+  width: 100%;
+  max-width: 160px;
+}
+
+.btn-primary {
+  background: #0f2170;
+  color: white;
+  border-color: transparent;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #667eea;
+  border-color: #667eea;
+}
+
+

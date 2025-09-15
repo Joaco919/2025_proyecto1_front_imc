@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { validateAltura, validatePeso, toNumber } from "../utils/validations";
 import { calcularIMC, ImcResult } from "../utils/api";
+import { useAuth } from "./AuthContext";
 
 type FieldErrors = {
   altura?: string;
@@ -13,6 +15,8 @@ function ImcForm() {
   const [peso, setPeso] = useState("");
   const [resultado, setResultado] = useState<ImcResult | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   const validateForm = (alturaStr: string, pesoStr: string) => {
     const newErrors: FieldErrors = {
@@ -38,6 +42,10 @@ const handleSubmit = async (e: React.FormEvent) => {
     setResultado(resultadoBackend);
   } catch (err: any) {
     setErrors({ general: err.message });
+    if (err?.message?.toLowerCase?.().includes('sesión') || err?.message?.includes('autenticado')) {
+      // Redirige al login si es un problema de autenticación
+      navigate('/login');
+    }
     setResultado(null);
   }
 };
@@ -58,6 +66,21 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div className="form-context">
+      <div className="navigation">
+        <Link to="/" className="nav-link">← Volver al inicio</Link>
+        <div className="auth-links">
+          {!isAuthenticated ? (
+            <>
+              <Link to="/login" className="nav-link">Iniciar Sesión</Link>
+              <Link to="/register" className="nav-link">Registrarse</Link>
+            </>
+          ) : (
+            <button onClick={logout} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+              Cerrar sesión
+            </button>
+          )}
+        </div>
+      </div>
       <img src="/grupo12.jpg" alt="Grupo12" className="grupo" />
       <h1>Calculadora de IMC</h1>
 

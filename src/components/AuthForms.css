@@ -1,0 +1,207 @@
+/* Estilos para formularios de autenticación */
+.auth-container {
+  height: 100vh;
+  width: 100vw; /* cubrir todo el ancho para tapar el fondo global */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0ea5e9; /* fondo uniforme como Home */
+  padding: 0;
+  overflow: hidden;
+}
+
+.auth-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 480px; /* más parecido al ancho de la card del Home */
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-header h2 {
+  color: #333;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.auth-header p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.form-group input {
+  padding: 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+  color: #111; /* texto visible */
+  caret-color: #111; /* color del cursor */
+}
+
+/* placeholder legible */
+.form-group input::placeholder {
+  color: #9aa0a6;
+}
+
+/* compatibilidad con autofill (Chrome) */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #111;
+  box-shadow: 0 0 0px 1000px #fff inset;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input.error {
+  border-color: #e74c3c;
+  background-color: #fdf2f2;
+}
+
+.form-group input.error:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.form-group input:disabled {
+  background-color: #f1f3f4;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.error-message::before {
+  content: "⚠";
+  font-size: 12px;
+}
+
+.auth-button {
+  background: #667eea; /* sólido para igualar criterio del Home */
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: none; /* sin animaciones de hover */
+  margin-top: 8px;
+}
+
+.auth-button:hover:not(:disabled) {
+  background: #667eea; /* sin cambio de color ni efectos */
+}
+
+.auth-button:active {
+  transform: translateY(0);
+}
+
+.auth-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+  box-shadow: none;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e1e5e9;
+}
+
+.auth-footer p {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 16px 0;
+}
+
+.auth-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+  color: #5a67d8;
+  text-decoration: underline;
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 16px;
+  }
+  
+  .auth-card {
+    padding: 24px;
+  }
+  
+  .auth-header h2 {
+    font-size: 24px;
+  }
+  
+  .form-group input {
+    padding: 14px;
+  }
+  
+  .auth-button {
+    padding: 14px 20px;
+  }
+}

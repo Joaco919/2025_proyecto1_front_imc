@@ -1,7 +1,7 @@
 /* Estilos generales */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  background: linear-gradient(135deg, #03437b, #0094fe);
   margin: 0;
   padding: 0;
   display: flex;
@@ -57,11 +57,18 @@ input {
   border-radius: 8px;
   font-size: 1rem;
   transition: border 0.3s;
+  color: #111; /* texto visible */
+  caret-color: #111; /* cursor visible */
 }
 
 input:focus {
   border-color: #4facfe;
   outline: none;
+}
+
+/* placeholder legible */
+input::placeholder {
+  color: #9aa0a6;
 }
 
 /* Botón */
@@ -92,5 +99,35 @@ p:first-child {
 
 div > div:last-child p {
   color: #000000; /* Rojo para errores */
+}
+
+/* Navegación */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.auth-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link {
+  color: #4facfe;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #f0f8ff;
+  color: #008cff;
 }
 
