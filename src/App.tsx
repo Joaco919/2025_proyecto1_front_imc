@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ImcForm from "./components/ImcForm";
+import Calculator from "./components/Calculator";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import HomePage from "./components/HomePage.tsx";
@@ -18,7 +18,7 @@ function App() {
           <Route path="/register" element={<RegisterForm />} />
           {/* Rutas protegidas */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/calculator" element={<ImcForm />} />
+            <Route path="/calculator" element={<Calculator />} />
             <Route path="/historial" element={<ImcHistorial />} />
           </Route>
         </Routes>

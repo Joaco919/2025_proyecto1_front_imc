@@ -54,6 +54,7 @@ export interface AuthResponse {
   access_token?: string;
   token?: string; // fallback por si cambia
   message?: string;
+  user?: UserProfile; // El backend también devuelve el usuario
   // Puedes extender con más campos si el backend los devuelve
 }
 
@@ -124,15 +125,36 @@ export const calcularIMC = async (altura: number, peso: number): Promise<ImcResu
 export type ImcHistEntry = {
   id?: string | number;
   fecha?: string; // ISO
+  createdAt?: string; // Campo alternativo del backend
+  updatedAt?: string;
   imc: number;
   categoria: string;
-  altura?: number;
-  peso?: number;
+  altura: number;
+  peso: number;
 };
 
-export const getImcHistorial = async (): Promise<ImcHistEntry[]> => {
+export interface HistorialFilters {
+  limit?: number;
+  fechaInicio?: string; // formato ISO date
+  fechaFin?: string; // formato ISO date
+}
+
+export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHistEntry[]> => {
   try {
-    const { data } = await api.get<ImcHistEntry[]>("/imc/historial");
+    const params = new URLSearchParams();
+    
+    if (filters?.limit) {
+      params.append('limit', filters.limit.toString());
+    }
+    if (filters?.fechaInicio) {
+      params.append('fechaInicio', filters.fechaInicio);
+    }
+    if (filters?.fechaFin) {
+      params.append('fechaFin', filters.fechaFin);
+    }
+
+    const url = `/imc/historial${params.toString() ? `?${params.toString()}` : ''}`;
+    const { data } = await api.get<ImcHistEntry[]>(url);
     return data;
   } catch (err: any) {
     const message = err?.response?.data?.message ?? "No se pudo obtener el historial de IMC";

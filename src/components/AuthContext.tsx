@@ -44,20 +44,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     setAuthToken(receivedToken);
     setToken(receivedToken);
-    // Cargar perfil real
-    const profile = await getProfile();
-    setUser(profile);
+    
+    // Si el backend ya devuelve el usuario, usarlo; si no, cargar perfil separadamente
+    if (res.user) {
+      setUser(res.user);
+    } else {
+      const profile = await getProfile();
+      setUser(profile);
+    }
   };
 
   const register = async (email: string, password: string) => {
     const res = await registerRequest(email, password);
-    // Algunas APIs devuelven token con el registro; si no, solo mensaje.
+    // El backend devuelve token con el registro
     const receivedToken = res.access_token || res.token;
     if (receivedToken) {
       setAuthToken(receivedToken);
       setToken(receivedToken);
-      const profile = await getProfile();
-      setUser(profile);
+      
+      // Si el backend ya devuelve el usuario, usarlo; si no, cargar perfil separadamente
+      if (res.user) {
+        setUser(res.user);
+      } else {
+        const profile = await getProfile();
+        setUser(profile);
+      }
     }
   };
 
