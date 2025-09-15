@@ -52,7 +52,23 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
     }
   };
 
-
+  const getCategoryColor = (categoria: string) => {
+    switch (categoria.toLowerCase()) {
+      case 'bajo peso':
+        return '#3498db';
+      case 'normal':
+        return '#27ae60';
+      case 'sobrepeso':
+        return '#f39c12';
+      case 'obesidad':
+      case 'obesidad i':
+      case 'obesidad ii':
+      case 'obesidad iii':
+        return '#e74c3c';
+      default:
+        return '#95a5a6';
+    }
+  };
 
   if (loading) {
     return (
@@ -141,6 +157,7 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
                   <th>Peso (kg)</th>
                   <th>Altura (m)</th>
                   <th>IMC</th>
+                  <th>Categoría</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,6 +167,14 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
                     <td>{item.peso}</td>
                     <td>{item.altura}</td>
                     <td className="imc-value">{item.imc.toFixed(2)}</td>
+                    <td>
+                      <span 
+                        className="categoria-badge"
+                        style={{ backgroundColor: getCategoryColor(item.categoria) }}
+                      >
+                        {item.categoria}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>

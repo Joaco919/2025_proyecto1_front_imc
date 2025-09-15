@@ -72,7 +72,23 @@ const Calculator: React.FC = () => {
     }
   };
 
-
+  const getCategoryColor = (categoria: string) => {
+    switch (categoria.toLowerCase()) {
+      case 'bajo peso':
+        return '#3498db';
+      case 'normal':
+        return '#27ae60';
+      case 'sobrepeso':
+        return '#f39c12';
+      case 'obesidad':
+      case 'obesidad i':
+      case 'obesidad ii':
+      case 'obesidad iii':
+        return '#e74c3c';
+      default:
+        return '#95a5a6';
+    }
+  };
 
   return (
     <div className="calculator-layout">
@@ -182,6 +198,15 @@ const Calculator: React.FC = () => {
                   <div className="imc-result">
                     <span className="imc-label">IMC:</span>
                     <span className="imc-value">{resultado.imc.toFixed(2)}</span>
+                  </div>
+                  <div className="category-result">
+                    <span className="category-label">Categoría:</span>
+                    <span 
+                      className="category-value"
+                      style={{ color: getCategoryColor(resultado.categoria) }}
+                    >
+                      {resultado.categoria}
+                    </span>
                   </div>
                 </div>
               </div>

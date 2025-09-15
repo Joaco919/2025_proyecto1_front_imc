@@ -162,7 +162,16 @@
   color: #000000 !important;
 }
 
-
+.categoria-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: white;
+  text-align: center;
+  min-width: 60px;
+}
 
 .historial-stats {
   display: flex;

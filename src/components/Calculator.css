@@ -216,13 +216,15 @@
   gap: 8px;
 }
 
-.imc-result {
+.imc-result,
+.category-result {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.imc-label {
+.imc-label,
+.category-label {
   font-weight: 600;
   color: #495057;
   font-size: 1.1rem;
@@ -232,6 +234,14 @@
   font-size: 2rem;
   font-weight: 700;
   color: #2c3e50;
+}
+
+.category-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .error-panel {
