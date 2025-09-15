@@ -151,30 +151,15 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
       params.append('limit', filtersCopy.limit.toString());
     }
 
-    // Variables para filtrado local
-    let fechaInicioLocal: Date | null = null;
-    let fechaFinLocal: Date | null = null;
-
-    // Formatear fecha de inicio (si existe)
+    // Enviar fechas al backend si existen
     if (filtersCopy?.fechaInicio) {
-      try {
-        // Crear fecha con hora 00:00:00 en zona horaria local
-        fechaInicioLocal = new Date(filtersCopy.fechaInicio + 'T00:00:00');
-        console.log('Filtro fecha inicio:', filtersCopy.fechaInicio, '->', fechaInicioLocal);
-      } catch (e) {
-        console.error('Error al formatear fecha inicio:', e);
-      }
+      params.append('fechaInicio', filtersCopy.fechaInicio);
+      console.log('Enviando fechaInicio al backend:', filtersCopy.fechaInicio);
     }
 
-    // Formatear fecha fin (si existe)
     if (filtersCopy?.fechaFin) {
-      try {
-        // Crear fecha con hora 23:59:59.999 para incluir todo el día
-        fechaFinLocal = new Date(filtersCopy.fechaFin + 'T23:59:59.999');
-        console.log('Filtro fecha fin:', filtersCopy.fechaFin, '->', fechaFinLocal);
-      } catch (e) {
-        console.error('Error al formatear fecha fin:', e);
-      }
+      params.append('fechaFin', filtersCopy.fechaFin);
+      console.log('Enviando fechaFin al backend:', filtersCopy.fechaFin);
     }
 
     // Construir URL con los parámetros
@@ -184,50 +169,8 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     const { data } = await api.get<ImcHistEntry[]>(url);
     console.log('Datos recibidos del backend:', data.length, 'items');
     
-    // Filtrar los datos localmente para asegurar que cumplan el rango de fechas
-    let filteredData = [...data];
-    
-    if (fechaInicioLocal || fechaFinLocal) {
-      console.log('Aplicando filtros locales...');
-      
-      filteredData = data.filter(item => {
-        const fechaRegistro = item.createdAt || item.fecha || '';
-        if (!fechaRegistro) return true;
-        
-        try {
-          // Crear fecha del item interpretándola como UTC (como viene del backend)
-          const itemFecha = new Date(fechaRegistro);
-          
-          // Convertir a fecha local solo para comparación (día completo)
-          const itemDiaLocal = new Date(itemFecha.getFullYear(), itemFecha.getMonth(), itemFecha.getDate());
-          
-          // Verificar si cumple filtro de fecha inicio
-          if (fechaInicioLocal) {
-            const inicioComparacion = new Date(fechaInicioLocal.getFullYear(), fechaInicioLocal.getMonth(), fechaInicioLocal.getDate());
-            if (itemDiaLocal < inicioComparacion) {
-              return false;
-            }
-          }
-          
-          // Verificar si cumple filtro de fecha fin
-          if (fechaFinLocal) {
-            const finComparacion = new Date(fechaFinLocal.getFullYear(), fechaFinLocal.getMonth(), fechaFinLocal.getDate());
-            if (itemDiaLocal > finComparacion) {
-              return false;
-            }
-          }
-          
-          return true;
-        } catch (e) {
-          console.error('Error procesando fecha:', fechaRegistro, e);
-          return true;
-        }
-      });
-      
-      console.log(`Filtrados: ${data.length} -> ${filteredData.length} items`);
-    }
-    
-    return filteredData;
+    // Ya no necesitamos filtrado local, el backend hace el filtrado
+    return data;
   } catch (err: any) {
     console.error('Error en getImcHistorial:', err);
     const message = err?.response?.data?.message ?? "No se pudo obtener el historial de IMC";
