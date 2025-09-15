@@ -13,23 +13,29 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
   const [filters, setFilters] = useState<HistorialFilters>({
     limit: 10
   });
+  // Agregamos un contador para forzar actualizaciones
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const loadHistorial = async (newFilters?: HistorialFilters) => {
     setLoading(true);
     setError(null);
     try {
+      console.log('Cargando historial con filtros:', newFilters || filters);
       const data = await getImcHistorial(newFilters || filters);
+      console.log('Datos obtenidos:', data);
       setItems(data);
     } catch (e) {
+      console.error('Error cargando historial:', e);
       setError((e as Error).message);
     } finally {
       setLoading(false);
     }
   };
 
+  // Recargar cuando cambien los filtros o el refreshKey
   useEffect(() => {
-    loadHistorial();
-  }, []);
+    loadHistorial(filters);
+  }, [filters, refreshKey]);
 
   const handleFilterChange = (newFilters: Partial<HistorialFilters>) => {
     // Si estamos limpiando filtros, asegurémonos de que sean undefined
@@ -44,10 +50,12 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
       processedFilters.fechaFin = undefined;
     }
     
+    // Sólo actualizamos los filtros, el efecto se encargará de recargar
     const updatedFilters = { ...filters, ...processedFilters };
     console.log('Filtros aplicados:', updatedFilters);
     setFilters(updatedFilters);
-    loadHistorial(updatedFilters);
+    // Utilizamos setRefreshKey para forzar una actualización
+    setRefreshKey(prev => prev + 1);
   };
 
   const formatDate = (dateString?: string) => {
@@ -95,7 +103,7 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
     return (
       <div className={embedded ? 'historial-embedded' : 'historial-container'}>
         <div className="error">Error: {error}</div>
-        <button onClick={() => loadHistorial()} className="retry-button">
+        <button onClick={() => setRefreshKey(prev => prev + 1)} className="retry-button">
           Reintentar
         </button>
       </div>
@@ -107,7 +115,7 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
       <div className="historial-header">
         <h3>Historial de Cálculos</h3>
         <button 
-          onClick={() => loadHistorial()} 
+          onClick={() => setRefreshKey(prev => prev + 1)} 
           className="refresh-button"
           title="Actualizar historial"
         >
@@ -148,13 +156,19 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
         </div>
         <button 
           onClick={() => {
-            const clearedFilters = { 
+            // Restablecemos los filtros y forzamos actualización
+            setFilters({
               fechaInicio: undefined, 
               fechaFin: undefined,
               limit: filters.limit 
-            };
-            setFilters(clearedFilters);
-            loadHistorial(clearedFilters);
+            });
+            // Actualizamos el refreshKey para forzar recarga
+            setRefreshKey(prev => prev + 1);
+            // Limpiar los campos de fecha visualmente
+            const fechaInicioInput = document.getElementById('fechaInicio') as HTMLInputElement;
+            const fechaFinInput = document.getElementById('fechaFin') as HTMLInputElement;
+            if (fechaInicioInput) fechaInicioInput.value = '';
+            if (fechaFinInput) fechaFinInput.value = '';
           }}
           className="clear-filters-button"
         >

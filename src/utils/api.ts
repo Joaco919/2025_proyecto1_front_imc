@@ -141,6 +141,8 @@ export interface HistorialFilters {
 
 export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHistEntry[]> => {
   try {
+    console.log('Recibiendo filtros:', filters);
+    
     // Crear una copia de los filtros para no modificar el original
     const filtersCopy = { ...filters };
     const params = new URLSearchParams();
@@ -149,14 +151,18 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
       params.append('limit', filtersCopy.limit.toString());
     }
 
+    // Variables para filtrado local
+    let fechaInicioLocal: Date | null = null;
+    let fechaFinLocal: Date | null = null;
+
     // Formatear fecha de inicio (si existe)
     if (filtersCopy?.fechaInicio) {
       try {
         // Crear fecha con hora 00:00:00
-        const fechaInicio = new Date(filtersCopy.fechaInicio);
-        fechaInicio.setHours(0, 0, 0, 0);
-        params.append('fechaInicio', fechaInicio.toISOString());
-        console.log('Fecha inicio filtrada:', fechaInicio.toISOString());
+        fechaInicioLocal = new Date(filtersCopy.fechaInicio);
+        fechaInicioLocal.setHours(0, 0, 0, 0);
+        params.append('fechaInicio', fechaInicioLocal.toISOString());
+        console.log('Fecha inicio filtrada:', fechaInicioLocal.toISOString());
       } catch (e) {
         console.error('Error al formatear fecha inicio:', e);
       }
@@ -166,10 +172,10 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     if (filtersCopy?.fechaFin) {
       try {
         // Crear fecha con hora 23:59:59.999 para incluir todo el día
-        const fechaFin = new Date(filtersCopy.fechaFin);
-        fechaFin.setHours(23, 59, 59, 999);
-        params.append('fechaFin', fechaFin.toISOString());
-        console.log('Fecha fin filtrada:', fechaFin.toISOString());
+        fechaFinLocal = new Date(filtersCopy.fechaFin);
+        fechaFinLocal.setHours(23, 59, 59, 999);
+        params.append('fechaFin', fechaFinLocal.toISOString());
+        console.log('Fecha fin filtrada:', fechaFinLocal.toISOString());
       } catch (e) {
         console.error('Error al formatear fecha fin:', e);
       }
@@ -180,26 +186,43 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     console.log('URL de solicitud:', API_BASE_URL + url);
     
     const { data } = await api.get<ImcHistEntry[]>(url);
+    console.log('Datos recibidos del backend:', data.length);
     
     // Filtrar los datos localmente para asegurar que cumplan el rango de fechas
     let filteredData = [...data];
     
-    if (filtersCopy?.fechaInicio || filtersCopy?.fechaFin) {
-      const fechaInicioMs = filtersCopy.fechaInicio ? new Date(filtersCopy.fechaInicio).setHours(0, 0, 0, 0) : null;
-      const fechaFinMs = filtersCopy.fechaFin ? new Date(filtersCopy.fechaFin).setHours(23, 59, 59, 999) : null;
-      
+    if (fechaInicioLocal || fechaFinLocal) {
       filteredData = data.filter(item => {
-        const itemFecha = new Date(item.createdAt || item.fecha || '').getTime();
+        // Obtener fecha del registro (usar createdAt o fecha)
+        const fechaRegistro = item.createdAt || item.fecha || '';
+        if (!fechaRegistro) return true; // Si no tiene fecha, incluirlo
         
-        const cumpleFechaInicio = fechaInicioMs === null || itemFecha >= fechaInicioMs;
-        const cumpleFechaFin = fechaFinMs === null || itemFecha <= fechaFinMs;
-        
-        return cumpleFechaInicio && cumpleFechaFin;
+        try {
+          const itemFecha = new Date(fechaRegistro);
+          
+          // Verificar si cumple filtro de fecha inicio
+          if (fechaInicioLocal && itemFecha < fechaInicioLocal) {
+            return false;
+          }
+          
+          // Verificar si cumple filtro de fecha fin
+          if (fechaFinLocal && itemFecha > fechaFinLocal) {
+            return false;
+          }
+          
+          return true;
+        } catch (e) {
+          console.error('Error procesando fecha:', fechaRegistro, e);
+          return true; // Si hay error, incluirlo por defecto
+        }
       });
+      
+      console.log('Datos después de filtrado local:', filteredData.length);
     }
     
     return filteredData;
   } catch (err: any) {
+    console.error('Error en getImcHistorial:', err);
     const message = err?.response?.data?.message ?? "No se pudo obtener el historial de IMC";
     throw new Error(message);
   }
