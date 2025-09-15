@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosHeaders } from "axios";
 
-// Base URL del backend (ajústalo si cambia)
-export const API_BASE_URL = "https://two025-proyecto1-back-imc-vlxv.onrender.com";
+// Base URL del backend - usando proxy de Vite en desarrollo
+export const API_BASE_URL = "/api";
 
 // Clave de almacenamiento del token
 const TOKEN_KEY = "auth_token";
@@ -51,7 +51,8 @@ export interface ImcResult {
 }
 
 export interface AuthResponse {
-  token?: string;
+  accessToken?: string;
+  token?: string; // fallback por si cambia
   message?: string;
   // Puedes extender con más campos si el backend los devuelve
 }
@@ -69,8 +70,10 @@ export const loginRequest = async (
 ): Promise<AuthResponse> => {
   try {
     const { data } = await api.post<AuthResponse>("/auth/login", { email, password });
+    console.log("Login response:", data); // DEBUG: ver qué devuelve el backend
     return data;
   } catch (err: any) {
+    console.error("Login error:", err?.response?.data || err.message); // DEBUG: ver el error completo
     const message = err?.response?.data?.message ?? "Credenciales inválidas o servidor no disponible";
     throw new Error(message);
   }
