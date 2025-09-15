@@ -1,5 +1,3 @@
-
-
 // Convierte coma a punto y devuelve número
 export const toNumber = (v: string): number =>
   parseFloat(v.replace(",", "."));

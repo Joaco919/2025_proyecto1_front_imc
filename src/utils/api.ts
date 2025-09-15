@@ -158,11 +158,11 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     // Formatear fecha de inicio (si existe)
     if (filtersCopy?.fechaInicio) {
       try {
-        // Crear fecha con hora 00:00:00
-        fechaInicioLocal = new Date(filtersCopy.fechaInicio);
-        fechaInicioLocal.setHours(0, 0, 0, 0);
+        // Crear fecha con hora 00:00:00 en zona horaria local
+        fechaInicioLocal = new Date(filtersCopy.fechaInicio + 'T00:00:00.000');
         params.append('fechaInicio', fechaInicioLocal.toISOString());
-        console.log('Fecha inicio filtrada:', fechaInicioLocal.toISOString());
+        console.log('Fecha inicio local:', filtersCopy.fechaInicio);
+        console.log('Fecha inicio ISO:', fechaInicioLocal.toISOString());
       } catch (e) {
         console.error('Error al formatear fecha inicio:', e);
       }
@@ -172,10 +172,10 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     if (filtersCopy?.fechaFin) {
       try {
         // Crear fecha con hora 23:59:59.999 para incluir todo el día
-        fechaFinLocal = new Date(filtersCopy.fechaFin);
-        fechaFinLocal.setHours(23, 59, 59, 999);
+        fechaFinLocal = new Date(filtersCopy.fechaFin + 'T23:59:59.999');
         params.append('fechaFin', fechaFinLocal.toISOString());
-        console.log('Fecha fin filtrada:', fechaFinLocal.toISOString());
+        console.log('Fecha fin local:', filtersCopy.fechaFin);
+        console.log('Fecha fin ISO:', fechaFinLocal.toISOString());
       } catch (e) {
         console.error('Error al formatear fecha fin:', e);
       }
@@ -192,24 +192,35 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     let filteredData = [...data];
     
     if (fechaInicioLocal || fechaFinLocal) {
+      console.log('=== FILTRADO LOCAL ===');
+      console.log('Fecha inicio filtro:', fechaInicioLocal?.toISOString());
+      console.log('Fecha fin filtro:', fechaFinLocal?.toISOString());
+      
       filteredData = data.filter(item => {
         // Obtener fecha del registro (usar createdAt o fecha)
         const fechaRegistro = item.createdAt || item.fecha || '';
-        if (!fechaRegistro) return true; // Si no tiene fecha, incluirlo
+        if (!fechaRegistro) {
+          console.log('Item sin fecha, incluido:', item.id);
+          return true; // Si no tiene fecha, incluirlo
+        }
         
         try {
           const itemFecha = new Date(fechaRegistro);
+          console.log(`Item ${item.id}: fecha ${fechaRegistro} -> ${itemFecha.toISOString()}`);
           
           // Verificar si cumple filtro de fecha inicio
           if (fechaInicioLocal && itemFecha < fechaInicioLocal) {
+            console.log(`Item ${item.id}: excluido por fecha inicio`);
             return false;
           }
           
           // Verificar si cumple filtro de fecha fin
           if (fechaFinLocal && itemFecha > fechaFinLocal) {
+            console.log(`Item ${item.id}: excluido por fecha fin`);
             return false;
           }
           
+          console.log(`Item ${item.id}: incluido en filtro`);
           return true;
         } catch (e) {
           console.error('Error procesando fecha:', fechaRegistro, e);
@@ -217,7 +228,9 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
         }
       });
       
+      console.log('Datos originales:', data.length);
       console.log('Datos después de filtrado local:', filteredData.length);
+      console.log('======================');
     }
     
     return filteredData;
