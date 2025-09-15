@@ -141,25 +141,64 @@ export interface HistorialFilters {
 
 export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHistEntry[]> => {
   try {
+    // Crear una copia de los filtros para no modificar el original
+    const filtersCopy = { ...filters };
     const params = new URLSearchParams();
     
-    if (filters?.limit) {
-      params.append('limit', filters.limit.toString());
-    }
-    if (filters?.fechaInicio) {
-      // Asegurar que la fecha tenga el formato ISO correcto (YYYY-MM-DD)
-      params.append('fechaInicio', new Date(filters.fechaInicio).toISOString().split('T')[0]);
-    }
-    if (filters?.fechaFin) {
-      // Ajustar la fecha final para incluir todo el día (23:59:59)
-      const fechaFin = new Date(filters.fechaFin);
-      fechaFin.setHours(23, 59, 59, 999);
-      params.append('fechaFin', fechaFin.toISOString());
+    if (filtersCopy?.limit) {
+      params.append('limit', filtersCopy.limit.toString());
     }
 
+    // Formatear fecha de inicio (si existe)
+    if (filtersCopy?.fechaInicio) {
+      try {
+        // Crear fecha con hora 00:00:00
+        const fechaInicio = new Date(filtersCopy.fechaInicio);
+        fechaInicio.setHours(0, 0, 0, 0);
+        params.append('fechaInicio', fechaInicio.toISOString());
+        console.log('Fecha inicio filtrada:', fechaInicio.toISOString());
+      } catch (e) {
+        console.error('Error al formatear fecha inicio:', e);
+      }
+    }
+
+    // Formatear fecha fin (si existe)
+    if (filtersCopy?.fechaFin) {
+      try {
+        // Crear fecha con hora 23:59:59.999 para incluir todo el día
+        const fechaFin = new Date(filtersCopy.fechaFin);
+        fechaFin.setHours(23, 59, 59, 999);
+        params.append('fechaFin', fechaFin.toISOString());
+        console.log('Fecha fin filtrada:', fechaFin.toISOString());
+      } catch (e) {
+        console.error('Error al formatear fecha fin:', e);
+      }
+    }
+
+    // Construir URL con los parámetros
     const url = `/imc/historial${params.toString() ? `?${params.toString()}` : ''}`;
+    console.log('URL de solicitud:', API_BASE_URL + url);
+    
     const { data } = await api.get<ImcHistEntry[]>(url);
-    return data;
+    
+    // Filtrar los datos localmente para asegurar que cumplan el rango de fechas
+    let filteredData = [...data];
+    
+    if (filtersCopy?.fechaInicio || filtersCopy?.fechaFin) {
+      const fechaInicioMs = filtersCopy.fechaInicio ? new Date(filtersCopy.fechaInicio).setHours(0, 0, 0, 0) : null;
+      const fechaFinMs = filtersCopy.fechaFin ? new Date(filtersCopy.fechaFin).setHours(23, 59, 59, 999) : null;
+      
+      filteredData = data.filter(item => {
+        const itemFecha = new Date(item.createdAt || item.fecha || '').getTime();
+        
+        const cumpleFechaInicio = fechaInicioMs === null || itemFecha >= fechaInicioMs;
+        const cumpleFechaFin = fechaFinMs === null || itemFecha <= fechaFinMs;
+        
+        return cumpleFechaInicio && cumpleFechaFin;
+      });
+    }
+    
+    return filteredData;
   } catch (err: any) {
     const message = err?.response?.data?.message ?? "No se pudo obtener el historial de IMC";
     throw new Error(message);

@@ -32,7 +32,20 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
   }, []);
 
   const handleFilterChange = (newFilters: Partial<HistorialFilters>) => {
-    const updatedFilters = { ...filters, ...newFilters };
+    // Si estamos limpiando filtros, asegurémonos de que sean undefined
+    const processedFilters = { ...newFilters };
+    
+    // Asegurar que si la fecha es vacía, se establece como undefined
+    if (processedFilters.hasOwnProperty('fechaInicio') && !processedFilters.fechaInicio) {
+      processedFilters.fechaInicio = undefined;
+    }
+    
+    if (processedFilters.hasOwnProperty('fechaFin') && !processedFilters.fechaFin) {
+      processedFilters.fechaFin = undefined;
+    }
+    
+    const updatedFilters = { ...filters, ...processedFilters };
+    console.log('Filtros aplicados:', updatedFilters);
     setFilters(updatedFilters);
     loadHistorial(updatedFilters);
   };
@@ -134,7 +147,15 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
           </select>
         </div>
         <button 
-          onClick={() => handleFilterChange({ fechaInicio: undefined, fechaFin: undefined })}
+          onClick={() => {
+            const clearedFilters = { 
+              fechaInicio: undefined, 
+              fechaFin: undefined,
+              limit: filters.limit 
+            };
+            setFilters(clearedFilters);
+            loadHistorial(clearedFilters);
+          }}
           className="clear-filters-button"
         >
           Limpiar filtros
