@@ -147,10 +147,14 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
       params.append('limit', filters.limit.toString());
     }
     if (filters?.fechaInicio) {
-      params.append('fechaInicio', filters.fechaInicio);
+      // Asegurar que la fecha tenga el formato ISO correcto (YYYY-MM-DD)
+      params.append('fechaInicio', new Date(filters.fechaInicio).toISOString().split('T')[0]);
     }
     if (filters?.fechaFin) {
-      params.append('fechaFin', filters.fechaFin);
+      // Ajustar la fecha final para incluir todo el día (23:59:59)
+      const fechaFin = new Date(filters.fechaFin);
+      fechaFin.setHours(23, 59, 59, 999);
+      params.append('fechaFin', fechaFin.toISOString());
     }
 
     const url = `/imc/historial${params.toString() ? `?${params.toString()}` : ''}`;
