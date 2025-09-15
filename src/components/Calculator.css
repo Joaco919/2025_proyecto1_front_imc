@@ -1,11 +1,8 @@
 /* Estilos para el componente Calculator */
 
 .calculator-layout {
-  height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 8px;
   overflow: hidden;
-  display: flex;
   flex-direction: column;
 }
 
@@ -29,7 +26,7 @@
   border-radius: 8px;
   transition: all 0.3s ease;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,.2);
   backdrop-filter: blur(5px);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
@@ -88,7 +85,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  flex: 1;
   min-height: 0;
 }
 
@@ -100,7 +96,6 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .calculator-panel {
