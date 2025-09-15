@@ -72,23 +72,7 @@ const Calculator: React.FC = () => {
     }
   };
 
-  const getCategoryColor = (categoria: string) => {
-    switch (categoria.toLowerCase()) {
-      case 'bajo peso':
-        return '#3498db';
-      case 'normal':
-        return '#27ae60';
-      case 'sobrepeso':
-        return '#f39c12';
-      case 'obesidad':
-      case 'obesidad i':
-      case 'obesidad ii':
-      case 'obesidad iii':
-        return '#e74c3c';
-      default:
-        return '#95a5a6';
-    }
-  };
+
 
   return (
     <div className="calculator-layout">
@@ -199,15 +183,6 @@ const Calculator: React.FC = () => {
                     <span className="imc-label">IMC:</span>
                     <span className="imc-value">{resultado.imc.toFixed(2)}</span>
                   </div>
-                  <div className="category-result">
-                    <span className="category-label">Categoría:</span>
-                    <span 
-                      className="category-value"
-                      style={{ color: getCategoryColor(resultado.categoria) }}
-                    >
-                      {resultado.categoria}
-                    </span>
-                  </div>
                 </div>
               </div>
             )}
@@ -218,29 +193,6 @@ const Calculator: React.FC = () => {
                 <p>{errors.general}</p>
               </div>
             )}
-
-            {/* Información sobre el IMC */}
-            <div className="imc-info">
-              <h3>Categorías del IMC:</h3>
-              <div className="category-list">
-                <div className="category-item">
-                  <span className="category-range">Menos de 18.5</span>
-                  <span className="category-name" style={{ color: '#3498db' }}>Bajo peso</span>
-                </div>
-                <div className="category-item">
-                  <span className="category-range">18.5 - 24.9</span>
-                  <span className="category-name" style={{ color: '#27ae60' }}>Normal</span>
-                </div>
-                <div className="category-item">
-                  <span className="category-range">25.0 - 29.9</span>
-                  <span className="category-name" style={{ color: '#f39c12' }}>Sobrepeso</span>
-                </div>
-                <div className="category-item">
-                  <span className="category-range">30.0 o más</span>
-                  <span className="category-name" style={{ color: '#e74c3c' }}>Obesidad</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 

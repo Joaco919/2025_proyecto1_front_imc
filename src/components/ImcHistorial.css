@@ -121,6 +121,11 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
+  color: #000000 !important;
+}
+
+.historial-table * {
+  color: #000000 !important;
 }
 
 .historial-table th {
@@ -128,7 +133,7 @@
   padding: 8px 6px;
   text-align: left;
   font-weight: 600;
-  color: #495057;
+  color: #000000 !important;
   border-bottom: 2px solid #dee2e6;
   position: sticky;
   top: 0;
@@ -140,7 +145,7 @@
   padding: 6px 6px;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
-  color: #2c3e50;
+  color: #000000 !important;
   background-color: #ffffff;
 }
 
@@ -149,24 +154,15 @@
 }
 
 .historial-table tbody tr:hover td {
-  color: #2c3e50;
+  color: #000000 !important;
 }
 
 .imc-value {
   font-weight: 600;
-  color: #2c3e50;
+  color: #000000 !important;
 }
 
-.categoria-badge {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: white;
-  text-align: center;
-  min-width: 60px;
-}
+
 
 .historial-stats {
   display: flex;
@@ -250,90 +246,4 @@
 .no-data p:first-child {
   font-weight: 600;
   color: #495057;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .historial-filters {
-    flex-direction: column;
-  }
-  
-  .filter-group {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .filter-group label {
-    min-width: 60px;
-  }
-  
-  .historial-table {
-    font-size: 0.8rem;
-  }
-  
-  .historial-table th,
-  .historial-table td {
-    padding: 8px 6px;
-  }
-  
-  .historial-stats {
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .stat-item {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-}
-
-@media (max-width: 480px) {
-  .historial-embedded {
-    padding: 8px;
-  }
-  
-  .historial-header {
-    margin-bottom: 6px;
-  }
-  
-  .historial-header h3 {
-    font-size: 1rem;
-    margin-bottom: 4px;
-  }
-  
-  .historial-filters {
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-  
-  .filter-group input,
-  .filter-group select {
-    padding: 4px 6px;
-    font-size: 0.8rem;
-  }
-  
-  .historial-table {
-    font-size: 0.75rem;
-  }
-  
-  .historial-table th,
-  .historial-table td {
-    padding: 3px;
-  }
-  
-  .historial-table th:nth-child(3),
-  .historial-table td:nth-child(3) {
-    display: none; /* Oculta la columna de altura en móviles muy pequeños */
-  }
-  
-  .historial-stats {
-    padding: 6px;
-    margin-top: 6px;
-  }
-  
-  .historial-stats p {
-    font-size: 0.75rem;
-    margin: 2px 0;
-  }
 }
