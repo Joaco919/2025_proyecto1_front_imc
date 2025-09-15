@@ -51,7 +51,7 @@ export interface ImcResult {
 }
 
 export interface AuthResponse {
-  accessToken?: string;
+  access_token?: string;
   token?: string; // fallback por si cambia
   message?: string;
   // Puedes extender con más campos si el backend los devuelve

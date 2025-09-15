@@ -37,7 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     const res = await loginRequest(email, password);
     console.log("AuthContext - Login response:", res); // DEBUG
-    const receivedToken = res.accessToken || res.token;
+    const receivedToken = res.access_token || res.token;
     if (!receivedToken) {
       console.error("No token in response:", res); // DEBUG
       throw new Error(res.message ?? "Respuesta inválida del servidor");
@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (email: string, password: string) => {
     const res = await registerRequest(email, password);
     // Algunas APIs devuelven token con el registro; si no, solo mensaje.
-    const receivedToken = res.accessToken || res.token;
+    const receivedToken = res.access_token || res.token;
     if (receivedToken) {
       setAuthToken(receivedToken);
       setToken(receivedToken);
