@@ -9,7 +9,7 @@
 .historial-embedded {
   background: white;
   border-radius: 8px;
-  padding: 16px;
+  padding: 12px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -140,10 +140,16 @@
   padding: 6px 6px;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
+  color: #2c3e50;
+  background-color: #ffffff;
 }
 
 .historial-table tbody tr:hover {
   background-color: #f1f3f4;
+}
+
+.historial-table tbody tr:hover td {
+  color: #2c3e50;
 }
 
 .imc-value {
