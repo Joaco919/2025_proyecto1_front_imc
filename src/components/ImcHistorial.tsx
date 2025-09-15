@@ -11,7 +11,7 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<HistorialFilters>({
-    limit: 20
+    limit: 10
   });
 
   const loadHistorial = async (newFilters?: HistorialFilters) => {
@@ -126,13 +126,11 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
           <label htmlFor="limit">Límite:</label>
           <select
             id="limit"
-            value={filters.limit || 20}
+            value={filters.limit || 10}
             onChange={(e) => handleFilterChange({ limit: parseInt(e.target.value) })}
           >
+            <option value={5}>5</option>
             <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
           </select>
         </div>
         <button 

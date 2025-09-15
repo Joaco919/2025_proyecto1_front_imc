@@ -113,7 +113,6 @@ const Calculator: React.FC = () => {
           </div>
         </div>
         <div className="calculator-title">
-          <img src="/grupo12.jpg" alt="Grupo12" className="grupo" />
           <h1>Calculadora de IMC</h1>
         </div>
       </div>
