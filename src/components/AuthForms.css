@@ -5,7 +5,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0ea5e9; /* fondo uniforme como Home */
   padding: 0;
   overflow: hidden;
 }
