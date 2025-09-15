@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosHeaders } from "axios";
 
-// Base URL del backend - usando proxy de Vite en desarrollo
-export const API_BASE_URL = "/api";
+// Base URL del backend
+export const API_BASE_URL = "https://two025-proyecto1-back-imc-vlxv.onrender.com";
 
 // Clave de almacenamiento del token
 const TOKEN_KEY = "auth_token";
