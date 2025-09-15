@@ -3,11 +3,10 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #03437b, #0094fe);
   margin: 0;
-  padding: 0;
+  padding: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 /* Contenedor principal */
