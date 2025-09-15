@@ -20,16 +20,9 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
     setLoading(true);
     setError(null);
     try {
-      console.log('=== CARGANDO HISTORIAL ===');
-      console.log('Filtros enviados:', newFilters || filters);
+      console.log('Cargando historial con filtros:', newFilters || filters);
       const data = await getImcHistorial(newFilters || filters);
-      console.log('Cantidad de datos obtenidos:', data.length);
-      console.log('Datos completos:', data);
-      if (data.length > 0) {
-        console.log('Primera fecha ejemplo:', data[0].createdAt || data[0].fecha);
-        console.log('Última fecha ejemplo:', data[data.length - 1].createdAt || data[data.length - 1].fecha);
-      }
-      console.log('==========================');
+      console.log('Historial cargado:', data.length, 'items');
       setItems(data);
     } catch (e) {
       console.error('Error cargando historial:', e);
@@ -59,11 +52,7 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
     
     // Sólo actualizamos los filtros, el efecto se encargará de recargar
     const updatedFilters = { ...filters, ...processedFilters };
-    console.log('=== DEBUG FILTROS ===');
-    console.log('Filtros anteriores:', filters);
-    console.log('Nuevos filtros:', newFilters);
-    console.log('Filtros finales:', updatedFilters);
-    console.log('=====================');
+    console.log('Aplicando filtros:', updatedFilters);
     setFilters(updatedFilters);
     // Utilizamos setRefreshKey para forzar una actualización
     setRefreshKey(prev => prev + 1);
@@ -73,13 +62,13 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
     if (!dateString) return 'Sin fecha';
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('es-ES', {
+      // Formatear usando la zona horaria local del usuario
+      return date.toLocaleString('es-ES', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
-        minute: '2-digit',
-        timeZone: 'America/Argentina/Buenos_Aires' // Ajustar según tu zona horaria
+        minute: '2-digit'
       });
     } catch {
       return 'Fecha inválida';
