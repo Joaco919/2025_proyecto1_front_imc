@@ -50,12 +50,11 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
       processedFilters.fechaFin = undefined;
     }
     
-    // Sólo actualizamos los filtros, el efecto se encargará de recargar
+    // Sólo actualizamos los filtros, el efecto se encargará de recargar automáticamente
     const updatedFilters = { ...filters, ...processedFilters };
     console.log('Aplicando filtros:', updatedFilters);
     setFilters(updatedFilters);
-    // Utilizamos setRefreshKey para forzar una actualización
-    setRefreshKey(prev => prev + 1);
+    // No necesitamos setRefreshKey aquí porque el useEffect ya reacciona al cambio de filters
   };
 
   const formatDate = (dateString?: string) => {
@@ -133,7 +132,10 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
             type="date"
             id="fechaInicio"
             value={filters.fechaInicio || ''}
-            onChange={(e) => handleFilterChange({ fechaInicio: e.target.value || undefined })}
+            onChange={(e) => {
+              const value = e.target.value?.trim();
+              handleFilterChange({ fechaInicio: value && value.length > 0 ? value : undefined });
+            }}
           />
         </div>
         <div className="filter-group">
@@ -142,7 +144,10 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
             type="date"
             id="fechaFin"
             value={filters.fechaFin || ''}
-            onChange={(e) => handleFilterChange({ fechaFin: e.target.value || undefined })}
+            onChange={(e) => {
+              const value = e.target.value?.trim();
+              handleFilterChange({ fechaFin: value && value.length > 0 ? value : undefined });
+            }}
           />
         </div>
         <div className="filter-group">

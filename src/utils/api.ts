@@ -141,7 +141,7 @@ export interface HistorialFilters {
 
 export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHistEntry[]> => {
   try {
-    console.log('Recibiendo filtros:', filters);
+    console.log('getImcHistorial - Filtros recibidos:', filters);
     
     // Crear una copia de los filtros para no modificar el original
     const filtersCopy = { ...filters };
@@ -149,30 +149,33 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     
     if (filtersCopy?.limit) {
       params.append('limit', filtersCopy.limit.toString());
+      console.log('getImcHistorial - Agregando limit:', filtersCopy.limit);
     }
 
     // Enviar fechas al backend si existen
     if (filtersCopy?.fechaInicio) {
       params.append('fechaInicio', filtersCopy.fechaInicio);
-      console.log('Enviando fechaInicio al backend:', filtersCopy.fechaInicio);
+      console.log('getImcHistorial - Agregando fechaInicio:', filtersCopy.fechaInicio);
     }
 
     if (filtersCopy?.fechaFin) {
       params.append('fechaFin', filtersCopy.fechaFin);
-      console.log('Enviando fechaFin al backend:', filtersCopy.fechaFin);
+      console.log('getImcHistorial - Agregando fechaFin:', filtersCopy.fechaFin);
     }
 
     // Construir URL con los parámetros
     const url = `/imc/historial${params.toString() ? `?${params.toString()}` : ''}`;
-    console.log('URL de solicitud:', API_BASE_URL + url);
+    console.log('getImcHistorial - URL completa:', API_BASE_URL + url);
+    console.log('getImcHistorial - Query parameters string:', params.toString());
     
     const { data } = await api.get<ImcHistEntry[]>(url);
-    console.log('Datos recibidos del backend:', data.length, 'items');
+    console.log('getImcHistorial - Respuesta del backend:', data);
+    console.log('getImcHistorial - Cantidad de items recibidos:', data.length);
     
-    // Ya no necesitamos filtrado local, el backend hace el filtrado
     return data;
   } catch (err: any) {
-    console.error('Error en getImcHistorial:', err);
+    console.error('getImcHistorial - Error completo:', err);
+    console.error('getImcHistorial - Response data:', err?.response?.data);
     const message = err?.response?.data?.message ?? "No se pudo obtener el historial de IMC";
     throw new Error(message);
   }
