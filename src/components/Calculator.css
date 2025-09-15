@@ -2,7 +2,8 @@
 
 .calculator-layout {
   height: 100vh;
-  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -11,7 +12,7 @@
 .calculator-header {
   max-width: 1400px;
   margin: 0 auto;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   flex-shrink: 0;
 }
 
@@ -75,13 +76,11 @@
 }
 
 .calculator-title h1 {
-  margin: 6px 0;
-  font-size: 1.8rem;
+  margin: 4px 0;
+  font-size: 1.6rem;
   font-weight: 700;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
-
-
 
 .calculator-content {
   max-width: 1400px;
@@ -105,7 +104,7 @@
 }
 
 .calculator-panel {
-  padding: 0px 16px;
+  padding: 12px;
 }
 
 .history-panel {
@@ -113,31 +112,31 @@
 }
 
 .calculator-form h2 {
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   color: #2c3e50;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
   text-align: center;
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   font-weight: 600;
   color: #34495e;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 .form-group input {
   width: 100%;
-  padding: 8px 10px;
+  padding: 6px 8px;
   border: 2px solid #e9ecef;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
@@ -168,16 +167,16 @@
 
 .calculate-button {
   width: 100%;
-  padding: 10px 18px;
+  padding: 8px 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .calculate-button:hover:not(:disabled) {
@@ -193,23 +192,23 @@
 }
 
 .result-panel {
-  margin-top: 12px;
-  padding: 12px;
+  margin-top: 8px;
+  padding: 8px;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border-radius: 8px;
   border-left: 4px solid #27ae60;
 }
 
 .result-panel h3 {
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   color: #2c3e50;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .result-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .imc-result,
@@ -223,19 +222,19 @@
 .category-label {
   font-weight: 600;
   color: #495057;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .imc-value {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 700;
   color: #2c3e50;
 }
 
 .category-value {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.3);
 }
