@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getImcHistorial, ImcHistEntry, HistorialFilters } from '../utils/api';
+import NavigationHeader from './NavigationHeader';
 import './ImcHistorial.css';
 
 interface ImcHistorialProps {
@@ -92,37 +93,62 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
     }
   };
 
+  // Normalizar imc a número y filtrar valores válidos para estadísticas
+  const numericImcs = items
+    .map(i => (typeof i.imc === 'number' ? i.imc : Number(i.imc)))
+    .filter((v) => Number.isFinite(v));
+
   if (loading) {
     return (
-      <div className={embedded ? 'historial-embedded' : 'historial-container'}>
-        <div className="loading">Cargando historial...</div>
-      </div>
+      <>
+        {!embedded && (
+          <div className="calculator-layout">
+            <NavigationHeader title="Historial de Cálculos" currentPage="historial" />
+          </div>
+        )}
+        <div className={embedded ? 'historial-embedded' : 'historial-container'}>
+          <div className="loading">Cargando historial...</div>
+        </div>
+      </>
     );
   }
 
   if (error) {
     return (
-      <div className={embedded ? 'historial-embedded' : 'historial-container'}>
-        <div className="error">Error: {error}</div>
-        <button onClick={() => setRefreshKey(prev => prev + 1)} className="retry-button">
-          Reintentar
-        </button>
-      </div>
+      <>
+        {!embedded && (
+          <div className="calculator-layout">
+            <NavigationHeader title="Historial de Cálculos" currentPage="historial" />
+          </div>
+        )}
+        <div className={embedded ? 'historial-embedded' : 'historial-container'}>
+          <div className="error">Error: {error}</div>
+          <button onClick={() => setRefreshKey(prev => prev + 1)} className="retry-button">
+            Reintentar
+          </button>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className={embedded ? 'historial-embedded' : 'historial-container'}>
-      <div className="historial-header">
-        <h3>Historial de Cálculos</h3>
-        <button 
-          onClick={() => setRefreshKey(prev => prev + 1)} 
-          className="refresh-button"
-          title="Actualizar historial"
-        >
-          🔄
-        </button>
-      </div>
+    <>
+      {!embedded && (
+        <div className="calculator-layout">
+          <NavigationHeader title="Historial de Cálculos" currentPage="historial" />
+        </div>
+      )}
+      <div className={embedded ? 'historial-embedded' : 'historial-container'}>
+        <div className="historial-header">
+          <h3>Historial de Cálculos</h3>
+          <button 
+            onClick={() => setRefreshKey(prev => prev + 1)} 
+            className="refresh-button"
+            title="Actualizar historial"
+          >
+            🔄
+          </button>
+        </div>
 
       {/* Filtros */}
       <div className="historial-filters">
@@ -152,14 +178,22 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
         </div>
         <div className="filter-group">
           <label htmlFor="limit">Límite:</label>
-          <select
+          <input
             id="limit"
-            value={filters.limit || 10}
-            onChange={(e) => handleFilterChange({ limit: parseInt(e.target.value) })}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-          </select>
+            type="number"
+            min={1}
+            value={String(filters.limit ?? 10)}
+            onChange={(e) => {
+              const raw = e.target.value;
+              const n = raw === '' ? undefined : parseInt(raw, 10);
+              // Si no es número o menor a 1, ignorar
+              if (n === undefined || Number.isNaN(n) || n < 1) {
+                handleFilterChange({ limit: undefined });
+              } else {
+                handleFilterChange({ limit: n });
+              }
+            }}
+          />
         </div>
         <button 
           onClick={() => {
@@ -208,7 +242,10 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
                     <td>{formatDate(item.createdAt || item.fecha)}</td>
                     <td>{item.peso}</td>
                     <td>{item.altura}</td>
-                    <td className="imc-value">{item.imc.toFixed(2)}</td>
+                    <td className="imc-value">{(() => {
+                      const imcNum = typeof item.imc === 'number' ? item.imc : Number(item.imc);
+                      return Number.isFinite(imcNum) ? imcNum.toFixed(2) : '—';
+                    })()}</td>
                     <td>
                       <span 
                         className="categoria-badge"
@@ -235,12 +272,13 @@ const ImcHistorial: React.FC<ImcHistorialProps> = ({ embedded = false }) => {
           <div className="stat-item">
             <span className="stat-label">IMC promedio:</span>
             <span className="stat-value">
-              {(items.reduce((sum, item) => sum + item.imc, 0) / items.length).toFixed(2)}
+              {numericImcs.length > 0 ? (numericImcs.reduce((sum, v) => sum + v, 0) / numericImcs.length).toFixed(2) : '—'}
             </span>
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

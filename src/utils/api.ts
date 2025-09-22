@@ -1,7 +1,8 @@
 import axios, { AxiosError, AxiosHeaders } from "axios";
 
 // Base URL del backend
-export const API_BASE_URL = "https://two025-proyecto1-back-imc-vlxv.onrender.com";
+export const API_BASE_URL = "https://two025-proyecto1-back-imc-vlxv.onrender.com"; // PRODUCCION
+// export const API_BASE_URL = "http://localhost:3000/"; // DESARROLLO
 
 // Clave de almacenamiento del token
 const TOKEN_KEY = "auth_token";
@@ -177,6 +178,64 @@ export const getImcHistorial = async (filters?: HistorialFilters): Promise<ImcHi
     console.error('getImcHistorial - Error completo:', err);
     console.error('getImcHistorial - Response data:', err?.response?.data);
     const message = err?.response?.data?.message ?? "No se pudo obtener el historial de IMC";
+    throw new Error(message);
+  }
+};
+
+// Interfaces para estadísticas
+export interface EstadisticasResumen {
+  totalCalculos: number;
+  promedioImc: number;
+  promedioPeso: number;
+  minImc: number;
+  maxImc: number;
+  desviacionImc: number;
+  variacionImc: number;
+  variacionPeso: number;
+}
+
+export interface CategoriaEstadistica {
+  categoria: string;
+  cantidad: number;
+  porcentaje: number;
+}
+
+export interface DatoTemporal {
+  fecha: string; // YYYY-MM-DD
+  imc: number;
+  peso: number;
+  altura: number;
+  categoria: string;
+}
+
+export interface EstadisticasResponse {
+  resumen: EstadisticasResumen;
+  categorias: CategoriaEstadistica[];
+  evolucionTemporal: DatoTemporal[];
+}
+
+export const getEstadisticas = async (fechaInicio?: string, fechaFin?: string): Promise<EstadisticasResponse> => {
+  try {
+    const params = new URLSearchParams();
+    
+    if (fechaInicio) {
+      params.append('fechaInicio', fechaInicio);
+    }
+    
+    if (fechaFin) {
+      params.append('fechaFin', fechaFin);
+    }
+
+    const url = `/imc/estadisticas${params.toString() ? `?${params.toString()}` : ''}`;
+    console.log('getEstadisticas - URL:', API_BASE_URL + url);
+    
+    const { data } = await api.get<EstadisticasResponse>(url);
+    console.log('getEstadisticas - Respuesta:', data);
+    
+    return data;
+  } catch (err: any) {
+    console.error('getEstadisticas - Error:', err);
+    const message = err?.response?.data?.message ?? "No se pudieron obtener las estadísticas";
     throw new Error(message);
   }
 };

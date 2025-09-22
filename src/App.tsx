@@ -3,6 +3,7 @@ import Calculator from "./components/Calculator";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import HomePage from "./components/HomePage.tsx";
+import Dashboard from "./components/Dashboard";
 import './App.css'
 import { AuthProvider } from "./components/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -20,6 +21,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/calculator" element={<Calculator />} />
             <Route path="/historial" element={<ImcHistorial />} />
+            <Route path="/estadisticas" element={<Dashboard />} />
           </Route>
         </Routes>
       </Router>

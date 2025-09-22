@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { validateAltura, validatePeso, toNumber } from "../utils/validations";
-import { calcularIMC, ImcResult } from "../utils/api";
-import { useAuth } from "./AuthContext";
-import ImcHistorial from "./ImcHistorial";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { validateAltura, validatePeso, toNumber } from '../utils/validations';
+import { calcularIMC, ImcResult } from '../utils/api';
+import { useAuth } from './AuthContext';
 import './Calculator.css';
 
 type FieldErrors = {
@@ -13,12 +12,12 @@ type FieldErrors = {
 };
 
 const Calculator: React.FC = () => {
-  const [altura, setAltura] = useState("");
-  const [peso, setPeso] = useState("");
+  const [altura, setAltura] = useState('');
+  const [peso, setPeso] = useState('');
   const [resultado, setResultado] = useState<ImcResult | null>(null);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [isCalculating, setIsCalculating] = useState(false);
-  const [historialKey, setHistorialKey] = useState(Date.now());
+
   const { isAuthenticated, logout } = useAuth();
 
   const validateForm = (alturaStr: string, pesoStr: string) => {
@@ -41,17 +40,12 @@ const Calculator: React.FC = () => {
     const pesoNum = toNumber(peso);
 
     setIsCalculating(true);
-
     try {
       const resultadoBackend = await calcularIMC(alturaNum, pesoNum);
       setResultado(resultadoBackend);
-      
-      // Actualizar el historial después de un cálculo exitoso
-      setTimeout(() => {
-        setHistorialKey(Date.now());
-      }, 500);
-    } catch (err: any) {
-      setErrors({ general: err.message });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setErrors({ general: msg || 'Error al calcular IMC' });
       setResultado(null);
     } finally {
       setIsCalculating(false);
@@ -91,11 +85,14 @@ const Calculator: React.FC = () => {
   };
 
   return (
-    <div className="calculator-layout">
-      {/* Header */}
+    <div className="calculator-layout calculator-only">
       <div className="calculator-header">
         <div className="navigation">
-          <Link to="/" className="nav-link">← Volver al inicio</Link>
+          <div className="nav-center">
+            <Link to="/calculator" className="nav-link">Calculadora</Link>
+            <Link to="/historial" className="nav-link">Historial</Link>
+            <Link to="/estadisticas" className="nav-link">📊 Dashboard</Link>
+          </div>
           <div className="auth-links">
             {!isAuthenticated ? (
               <>
@@ -103,8 +100,8 @@ const Calculator: React.FC = () => {
                 <Link to="/register" className="nav-link">Registrarse</Link>
               </>
             ) : (
-              <button 
-                onClick={logout} 
+              <button
+                onClick={logout}
                 className="nav-link logout-button"
               >
                 Cerrar sesión
@@ -117,13 +114,11 @@ const Calculator: React.FC = () => {
         </div>
       </div>
 
-      {/* Contenido principal */}
-      <div className="calculator-content">
-        {/* Panel de calculadora */}
-        <div className="calculator-panel">
+      <div className="calculator-content single-column">
+        <div className="calculator-panel full-width">
           <div className="calculator-form">
             <h2>Calcular IMC</h2>
-            
+
             <form onSubmit={handleSubmit} noValidate>
               <div className="form-group">
                 <label htmlFor="altura">Altura (metros):</label>
@@ -181,8 +176,8 @@ const Calculator: React.FC = () => {
                 )}
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="calculate-button"
                 disabled={isCalculating}
               >
@@ -190,7 +185,6 @@ const Calculator: React.FC = () => {
               </button>
             </form>
 
-            {/* Resultado */}
             {resultado && (
               <div className="result-panel">
                 <h3>Tu resultado:</h3>
@@ -201,7 +195,7 @@ const Calculator: React.FC = () => {
                   </div>
                   <div className="category-result">
                     <span className="category-label">Categoría:</span>
-                    <span 
+                    <span
                       className="category-value"
                       style={{ color: getCategoryColor(resultado.categoria) }}
                     >
@@ -212,18 +206,12 @@ const Calculator: React.FC = () => {
               </div>
             )}
 
-            {/* Error general */}
             {errors.general && (
               <div className="error-panel">
                 <p>{errors.general}</p>
               </div>
             )}
           </div>
-        </div>
-
-        {/* Panel de historial */}
-        <div className="history-panel">
-          <ImcHistorial key={historialKey} embedded={true} />
         </div>
       </div>
     </div>
